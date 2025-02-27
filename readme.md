@@ -16,9 +16,22 @@ Les sessions PHP sont utilisées pour gérer l'authentification des utilisateurs
 ```php
 <?php
 session_start();
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit();
+$_SESSION['nom'] = "John";
+
+echo "Bonjour " . $_SESSION['nom'];
+?>
+```
+
+Dans l'exemple ci-dessus, on démarre une session avec `session_start()`, ce qui est nécessaire et obligatoire pour commencer la session de l'utilsateur, puis on stocke le nom de l'utilisateur dans la session avec `$_SESSION['nom'] = "John";`. Enfin, on affiche le nom de l'utilisateur avec `echo "Bonjour " . $_SESSION['nom'];`. Chaque fichier avec une session lancé "session_start()" pourra donc faire appel à `$_SESSION['nom'];` pour afficher le nom de l'utilisateur.
+
+Autre exemple fréquemment utilisé :
+
+```php
+<?php
+session_start(); // Lance la session
+if (!isset($_SESSION['user'])) { // Vérifie si l'utilisateur est connecté
+    header('Location: login.php'); // Redirige vers la page de connexion
+    exit(); // Arrête l'exécution du script
 }
 ?>
 ```
@@ -47,6 +60,15 @@ try {
 ?>
 ```
 
+Ce code permet donc de connecter la base de donnée en renseignant les infos de connexion : hôte (`$host`), nom d'utilisateur (`$username`), mot de passe (`$password`) et nom de la base de données (`$dbname`) qui par défaut est 'test' en utilisant xamp.
+
+Pour visualiser la base de donnée, plusieurs méthodes existent, comme [l'extension VSCode DataBase Client JDBC](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc) vous devrez aussi installer [l'extension pour MySQL, Data Base Client](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2).
+
+Elle permet non seulement de visualiser, mais aussi modifer, ajouter, supprimer des données de la base de donnée. Elle permet donc d'exécuter des commandes SQL directement depuis VSCode.
+
+Il faut penser à ouvrir Xamp en administrateur pour que la base de donnée soit accessible et lancer "MySQL".
+
+Pour en apprendre plus, le site [W3Schools](https://www.w3schools.com/php/php_mysql_intro.asp) est une bonne documentation pour apprendre le SQL avec php.
 
 
 # Requêtes POST
@@ -60,7 +82,7 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
     if (isset($_POST['task']) && !empty($_POST['task'])) {
         include 'db.php';
         $userId = $_SESSION['user']['id'];
@@ -73,4 +95,4 @@ exit();
 ?>
 ```
 
-Dans cet exemple, on vérifie si la méthode de la requête est POST (`if ($_SERVER['REQUEST_METHOD'] === 'POST')`). Ensuite, on vérifie si le champ de la tâche est défini et qu'il n'est pas vide (`if (isset($_POST['task']) && !empty($_POST['task']))`). Si c'est le cas, on ajoute la tâche en appelant la fonction `addTask()`.
+Dans cet exemple, on vérifie si la méthode de la requête est POST (La méthode est définie dans les balies `form` en html avec la method `POST` et `action` doit contenie le lien de la requête. (`if ($_SERVER['REQUEST_METHOD'] === 'POST')`). Ensuite, on vérifie si le champ de la tâche est défini et qu'il n'est pas vide (`if (isset($_POST['task']) && !empty($_POST['task']))`). Si c'est le cas, on ajoute la tâche en appelant la fonction `addTask()`.
